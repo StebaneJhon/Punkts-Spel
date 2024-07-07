@@ -11,18 +11,18 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ssoaharison.punktsspel.components.SnackBar
 import com.ssoaharison.punktsspel.components.State
+import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
-import com.ssoaharison.punktsspel.ui.theme.backgroundLight
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -37,6 +37,8 @@ fun PunktsSpelApp(
 
     var showSnackbar by remember { mutableStateOf(false) }
     var snackBarText by remember { mutableStateOf("") }
+
+    var verticesList = listOf<Point>().toMutableStateList()
 
     PunktsSpelTheme {
         Scaffold (
@@ -53,7 +55,9 @@ fun PunktsSpelApp(
                     .padding(contentPadding)
             ) {
 
-                State(modifier = modifier)
+                State(
+                    modifier = modifier
+                )
 
                 GameBoard(
                     modifier = modifier,
@@ -66,10 +70,27 @@ fun PunktsSpelApp(
                     onShowSnackBar = { text ->
                         snackBarText = text
                         showSnackbar = !showSnackbar
+                    },
+                    onCatching = { point ->
+                        //TODO: Add points in verticesList
+                        if (punktsSpelViewModel.whosPoint(point) != point.toPlayer) {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(message = "Inte din punkt :/")
+                            }
+                            showSnackbar = !showSnackbar
+                            return@GameBoard
+                        }
+                        if (punktsSpelViewModel.isActive(point)) {
+                            verticesList.add(point)
+                        } else {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(message = "Kan inte använda den här!")
+                            }
+                            showSnackbar = !showSnackbar
+                        }
+                        //TODO: Check for cycle
                     }
                 )
-
-
             }
             if ( showSnackbar ) {
                 scope.launch {
@@ -82,6 +103,7 @@ fun PunktsSpelApp(
     }
 
 }
+
 
 @Preview(device = "spec:parent=pixel_5,orientation=landscape")
 @Composable

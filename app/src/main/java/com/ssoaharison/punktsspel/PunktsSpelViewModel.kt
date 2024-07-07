@@ -2,6 +2,7 @@ package com.ssoaharison.punktsspel
 
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import com.ssoaharison.punktsspel.models.Point
 
 class PunktsSpelViewModel: ViewModel() {
 
@@ -23,6 +24,36 @@ class PunktsSpelViewModel: ViewModel() {
             pointInPointList.toPlayer = point.toPlayer
             pointInPointList.color = point.color
         }
+    }
+
+    fun whosPoint(
+        point: Point,
+    ): Int? {
+        var user: Int? = null
+        _points.forEach { row ->
+            row.forEach { p ->
+                if ( p.id == point.id && p.isActive ) {
+                    user = p.toPlayer
+                }
+            }
+        }
+        return user
+    }
+
+    fun isActive(
+        point: Point,
+    ): Boolean {
+
+        var isActive = false
+        _points.forEach { row ->
+            row.forEach { p ->
+                if ( p.id == point.id && p.isActive ) {
+                    isActive = true
+                }
+            }
+        }
+
+        return isActive
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ssoaharison.punktsspel
+package com.ssoaharison.punktsspel.models
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

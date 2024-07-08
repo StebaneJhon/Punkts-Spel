@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -43,6 +44,7 @@ fun GameBoard (
     onAddPoint: (Point) -> Unit,
     onShowSnackBar: (String) -> Unit,
     onCatching: (Point) -> Unit,
+    onDoneCatching: () -> Unit,
 ) {
 
     var canvasSize by remember {
@@ -120,7 +122,7 @@ fun GameBoard (
                                             onAddPoint(newPoint)
                                             actualPlayer = if (actualPlayer == 1) 2 else 1
                                         } else {
-                                            onShowSnackBar("Ser utt som att du inte kan sätta en punkt här.")
+                                            onShowSnackBar("Ser ut som att du inte kan sätta en punkt här.")
                                         }
                                     }
                                 }
@@ -181,7 +183,7 @@ fun GameBoard (
         Row(
             modifier = modifier
         ) {
-            Button(
+            TextButton(
                 onClick = {
                     areCatching = ARE_CATCHING
                 },
@@ -190,9 +192,10 @@ fun GameBoard (
             ) {
                 Text(text = "Catch")
             }
-            Button(
+            TextButton(
                 onClick = {
                     areCatching = ARE_NOT_CATCHING
+                    onDoneCatching()
                 },
                 modifier = Modifier
             ) {
@@ -232,6 +235,7 @@ fun PreviewGameBoard() {
                 10,
                 5,
                 listOf<List<Point>>(),
+                {null},
                 {null},
                 {null},
                 {null},

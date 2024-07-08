@@ -35,9 +35,6 @@ fun PunktsSpelApp(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var showSnackbar by remember { mutableStateOf(false) }
-    var snackBarText by remember { mutableStateOf("") }
-
     var verticesList = listOf<Point>().toMutableStateList()
 
     PunktsSpelTheme {
@@ -68,35 +65,36 @@ fun PunktsSpelApp(
                         punktsSpelViewModel.addPoint(point)
                     },
                     onShowSnackBar = { text ->
-                        snackBarText = text
-                        showSnackbar = !showSnackbar
+                        scope.launch {
+                            snackbarHostState.showSnackbar(message = text)
+                        }
+
                     },
                     onCatching = { point ->
-                        //TODO: Add points in verticesList
-                        if (punktsSpelViewModel.whosPoint(point) != point.toPlayer) {
+                        if (punktsSpelViewModel.whosPoint(point) != point.toPlayer && punktsSpelViewModel.isActive(point)) {
                             scope.launch {
                                 snackbarHostState.showSnackbar(message = "Inte din punkt :/")
                             }
-                            showSnackbar = !showSnackbar
+
                             return@GameBoard
                         }
                         if (punktsSpelViewModel.isActive(point)) {
                             verticesList.add(point)
                         } else {
                             scope.launch {
-                                snackbarHostState.showSnackbar(message = "Kan inte använda den här!")
+                                snackbarHostState.showSnackbar(message = "Välja en av dina punkter.")
                             }
-                            showSnackbar = !showSnackbar
+
                         }
-                        //TODO: Check for cycle
+                    },
+                    onDoneCatching = {
+                        val vList = verticesList
+                        val graph = Graph()
+                        graph.toAdjacentList(vList)
+                        val adList = graph.getAdjacencyList()
+                        val cycle = graph.checkForCycle(verticesList[0])
                     }
                 )
-            }
-            if ( showSnackbar ) {
-                scope.launch {
-                    snackbarHostState.showSnackbar(message = snackBarText)
-                }
-                showSnackbar = !showSnackbar
             }
         }
 

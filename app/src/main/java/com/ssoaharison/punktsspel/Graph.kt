@@ -1,9 +1,15 @@
 package com.ssoaharison.punktsspel
 
+import android.util.Log
 import com.ssoaharison.punktsspel.models.Point
+import com.ssoaharison.punktsspel.models.PointPairEdgeToEdge
 import kotlin.contracts.Returns
 
 class Graph {
+
+    companion object {
+        private const val TAG = "Graph"
+    }
 
     private val adjacencyList = mutableMapOf<Point, MutableList<Point>>()
 
@@ -68,6 +74,44 @@ class Graph {
         }
 
         return markedVertexes
+    }
+
+    fun toEdgeToEdgeList(): List<PointPairEdgeToEdge> {
+        val startPoint = adjacencyList.keys.first()
+        val cycle = checkForCycle(startPoint)
+        val result = mutableListOf<PointPairEdgeToEdge>()
+        val paired = mutableListOf<Point>()
+        if (!cycle.isNullOrEmpty()) {
+            cycle.forEach { point1 ->
+                if (point1 !in paired) {
+                    cycle.forEach { point2 ->
+                        if (point2 != point1 && point2.positionColumn == point1.positionColumn) {
+                            if (point1.positionRow!! > point2.positionRow!!) {
+                                result.add(
+                                    PointPairEdgeToEdge(
+                                        point2,
+                                        point1
+                                    )
+                                )
+                            } else {
+                                result.add(
+                                    PointPairEdgeToEdge(
+                                        point1,
+                                        point2
+                                    )
+                                )
+                            }
+                            paired.add(point2)
+                        }
+                    }
+
+                }
+                paired.add(point1)
+            }
+        } else {
+            Log.e(TAG, "Ingen graph att jobba med!")
+        }
+        return result
     }
 
     fun toAdjacentList(

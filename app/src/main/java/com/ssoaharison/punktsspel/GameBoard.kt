@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ssoaharison.punktsspel.models.PathModel
 import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
 import com.ssoaharison.punktsspel.ui.theme.baseGreen
@@ -42,11 +43,11 @@ fun GameBoard (
     verticalLines: Int,
     horizontalLines: Int,
     listPoints: List<List<Point>>,
-    listPaths: List<Path>,
+    listPaths: List<PathModel>,
     onAddPoint: (Point) -> Unit,
     onShowSnackBar: (String) -> Unit,
     onCatching: (Point) -> Unit,
-    onDoneCatching: () -> Unit,
+    onDoneCatching: (Int) -> Unit,
 ) {
 
     var canvasSize by remember {
@@ -179,16 +180,14 @@ fun GameBoard (
                     }
                 }
 
-                listPaths.forEach { path ->
+                listPaths.forEach { pathModel ->
                     drawPath(
-                        path,
-                        baseGreen,
+                        pathModel.path,
+                        pathModel.color,
                         0.5f,
                         Stroke(2.dp.toPx())
                     )
                 }
-
-
 
             }
         }
@@ -208,7 +207,7 @@ fun GameBoard (
             TextButton(
                 onClick = {
                     areCatching = ARE_NOT_CATCHING
-                    onDoneCatching()
+                    onDoneCatching(actualPlayer)
                 },
                 modifier = Modifier
             ) {
@@ -248,7 +247,7 @@ fun PreviewGameBoard() {
                 10,
                 5,
                 listOf<List<Point>>(),
-                listOf<Path>(),
+                listOf<PathModel>(),
                 {null},
                 {null},
                 {null},

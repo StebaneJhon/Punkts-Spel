@@ -17,7 +17,9 @@ import com.ssoaharison.punktsspel.ui.theme.lightNavy
 
 @Composable
 fun State(
-    modifier: Modifier
+    modifier: Modifier,
+    player1Sore: Int,
+    player2Sore: Int,
 ) {
     Column(
         modifier = Modifier
@@ -25,14 +27,14 @@ fun State(
         StateItem(
             modifier = modifier.weight(1f),
             name = "Player 1",
-            score = 5,
+            score = player1Sore,
             background = lightNavy,
             textColor = darkNavy
         )
         StateItem(
             modifier = modifier.weight(1f),
             name = "Player 2",
-            score = 4,
+            score = player2Sore,
             background = lightGreen,
             textColor = darkGreen
         )
@@ -44,6 +46,6 @@ fun State(
 @Composable
 fun StatePreview() {
     PunktsSpelTheme {
-        State(Modifier)
+        State(Modifier, 1, 2)
     }
 }

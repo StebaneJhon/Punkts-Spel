@@ -1,9 +1,15 @@
 package com.ssoaharison.punktsspel
 
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Path
 import androidx.lifecycle.ViewModel
+import com.ssoaharison.punktsspel.models.PathModel
 import com.ssoaharison.punktsspel.models.Point
+import com.ssoaharison.punktsspel.models.PointPairEdgeToEdge
 
 class PunktsSpelViewModel: ViewModel() {
 
@@ -11,9 +17,21 @@ class PunktsSpelViewModel: ViewModel() {
     val points: List<List<Point>>
         get() = _points
 
-    private val _paths = mutableListOf<Path>().toMutableStateList()
-    val paths: List<Path>
+    private val _p1CaughtPoints = mutableListOf<Point>().toMutableStateList()
+    val p1CaughtPoints: List<Point>
+        get() = _p1CaughtPoints
+
+    private val _p2CaughtPoints = mutableListOf<Point>().toMutableStateList()
+    val p2CaughtPoints: List<Point>
+        get() = _p2CaughtPoints
+
+    private val _paths = mutableListOf<PathModel>().toMutableStateList()
+    val paths: List<PathModel>
         get() = _paths
+
+    fun getScoreP1() = p1CaughtPoints.size
+    fun getScoreP2() = p2CaughtPoints.size
+
 
     fun addPoint(
         point: Point
@@ -63,7 +81,30 @@ class PunktsSpelViewModel: ViewModel() {
 
     fun addPath(vertexes: List<Point>) {
         val path = generatePath(vertexes)
-        _paths.add(path)
+        val color = vertexes[0].color !!
+        val pathModel = PathModel(color, path)
+        _paths.add(pathModel)
+    }
+
+    fun countCaughtPoints(edgeToEdgeGraph: List<PointPairEdgeToEdge>, player: Int) {
+
+        edgeToEdgeGraph.forEach { pair ->
+            val positionColumn = pair.higher.positionColumn
+            _points[positionColumn!!].forEach { point ->
+                if (point.isActive) {
+                    if (pair.lower.positionRow!! < point.positionRow!!  &&
+                        point.positionRow!! < pair.higher.positionRow!!
+                    ) {
+                        if (player == 1) {
+                            _p1CaughtPoints.add(point)
+                        } else {
+                            _p2CaughtPoints.add(point)
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 }

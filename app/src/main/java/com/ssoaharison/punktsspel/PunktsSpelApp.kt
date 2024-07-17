@@ -10,11 +10,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
@@ -35,7 +38,16 @@ fun PunktsSpelApp(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    var scoreP1 by remember {
+        mutableIntStateOf(0)
+    }
+
+    var scoreP2 by remember {
+        mutableIntStateOf(0)
+    }
+
     var verticesList = listOf<Point>().toMutableStateList()
+
 
     PunktsSpelTheme {
         Scaffold (
@@ -53,7 +65,9 @@ fun PunktsSpelApp(
             ) {
 
                 State(
-                    modifier = modifier
+                    modifier = modifier,
+                    player1Sore = scoreP1,
+                    player2Sore = scoreP2,
                 )
 
                 GameBoard(
@@ -88,7 +102,7 @@ fun PunktsSpelApp(
 
                         }
                     },
-                    onDoneCatching = {
+                    onDoneCatching = { player ->
                         if (!verticesList.isEmpty()) {
                             val vList = verticesList
                             val graph = Graph()
@@ -104,6 +118,13 @@ fun PunktsSpelApp(
                                 vList.clear()
                             } else {
                                 punktsSpelViewModel.addPath(cycle)
+                                val edgeToEdgeGraph = graph.toEdgeToEdgeList()
+                                punktsSpelViewModel.countCaughtPoints(edgeToEdgeGraph, player)
+                                scoreP1 = punktsSpelViewModel.getScoreP1()
+                                scoreP2 = punktsSpelViewModel.getScoreP2()
+                                graph.clearAdjacencyList()
+                                verticesList.clear()
+                                vList.clear()
                             }
                         }
                     }

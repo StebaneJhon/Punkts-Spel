@@ -7,6 +7,9 @@ class Graph {
 
     private val adjacencyList = mutableMapOf<Point, MutableList<Point>>()
 
+    fun clearAdjacencyList() {
+        adjacencyList.clear()
+    }
     fun addVertex(vertex: Point) {
         adjacencyList[vertex] = mutableListOf()
     }

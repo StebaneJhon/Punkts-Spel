@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +42,7 @@ fun GameBoard (
     verticalLines: Int,
     horizontalLines: Int,
     listPoints: List<List<Point>>,
+    listPaths: List<Path>,
     onAddPoint: (Point) -> Unit,
     onShowSnackBar: (String) -> Unit,
     onCatching: (Point) -> Unit,
@@ -177,6 +179,17 @@ fun GameBoard (
                     }
                 }
 
+                listPaths.forEach { path ->
+                    drawPath(
+                        path,
+                        baseGreen,
+                        0.5f,
+                        Stroke(2.dp.toPx())
+                    )
+                }
+
+
+
             }
         }
 
@@ -235,6 +248,7 @@ fun PreviewGameBoard() {
                 10,
                 5,
                 listOf<List<Point>>(),
+                listOf<Path>(),
                 {null},
                 {null},
                 {null},

@@ -61,6 +61,7 @@ fun PunktsSpelApp(
                     verticalLines = 5,
                     horizontalLines = 3,
                     listPoints = punktsSpelViewModel.points,
+                    listPaths = punktsSpelViewModel.paths,
                     onAddPoint = { point ->
                         punktsSpelViewModel.addPoint(point)
                     },
@@ -88,11 +89,23 @@ fun PunktsSpelApp(
                         }
                     },
                     onDoneCatching = {
-                        val vList = verticesList
-                        val graph = Graph()
-                        graph.toAdjacentList(vList)
-                        val adList = graph.getAdjacencyList()
-                        val cycle = graph.checkForCycle(verticesList[0])
+                        if (!verticesList.isEmpty()) {
+                            val vList = verticesList
+                            val graph = Graph()
+                            graph.toAdjacentList(vList)
+                            val adList = graph.getAdjacencyList()
+                            val cycle = graph.checkForCycle(verticesList[0])
+                            if (cycle.isNullOrEmpty()) {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(message = "Den här är inte stängd?")
+                                }
+                                graph.clearAdjacencyList()
+                                verticesList.clear()
+                                vList.clear()
+                            } else {
+                                punktsSpelViewModel.addPath(cycle)
+                            }
+                        }
                     }
                 )
             }

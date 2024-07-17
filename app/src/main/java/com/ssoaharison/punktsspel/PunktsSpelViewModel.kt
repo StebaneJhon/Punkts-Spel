@@ -1,6 +1,7 @@
 package com.ssoaharison.punktsspel
 
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.graphics.Path
 import androidx.lifecycle.ViewModel
 import com.ssoaharison.punktsspel.models.Point
 
@@ -9,6 +10,10 @@ class PunktsSpelViewModel: ViewModel() {
     private val _points = createPointList(5, 3).toMutableStateList()
     val points: List<List<Point>>
         get() = _points
+
+    private val _paths = mutableListOf<Path>().toMutableStateList()
+    val paths: List<Path>
+        get() = _paths
 
     fun addPoint(
         point: Point
@@ -56,7 +61,25 @@ class PunktsSpelViewModel: ViewModel() {
         return isActive
     }
 
+    fun addPath(vertexes: List<Point>) {
+        val path = generatePath(vertexes)
+        _paths.add(path)
+    }
+
 }
+
+fun generatePath(vertexes: List<Point>): Path {
+    val path = Path()
+    path.moveTo(vertexes[0].x!!, vertexes[0].y!!)
+    vertexes.forEach { point ->
+        val x = point.x ?: 0.0.toFloat()
+        val y = point.y ?: 0.0.toFloat()
+        path.lineTo(x , y)
+    }
+    path.close()
+    return path
+}
+
 
 fun createPointList(
     verticalLines: Int,

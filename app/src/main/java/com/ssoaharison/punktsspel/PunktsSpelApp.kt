@@ -72,8 +72,8 @@ fun PunktsSpelApp(
 
                 GameBoard(
                     modifier = modifier,
-                    verticalLines = 5,
-                    horizontalLines = 3,
+                    verticalLines = 7,
+                    horizontalLines = 5,
                     listPoints = punktsSpelViewModel.points,
                     listPaths = punktsSpelViewModel.paths,
                     onAddPoint = { point ->
@@ -93,6 +93,12 @@ fun PunktsSpelApp(
 
                             return@GameBoard
                         }
+                        if (punktsSpelViewModel.isCaught(point)) {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(message = "Kan inte använda den här:)")
+                            }
+                            return@GameBoard
+                        }
                         if (punktsSpelViewModel.isActive(point)) {
                             verticesList.add(point)
                         } else {
@@ -106,8 +112,7 @@ fun PunktsSpelApp(
                         if (!verticesList.isEmpty()) {
                             val vList = verticesList
                             val graph = Graph()
-                            graph.toAdjacentList(vList)
-                            val adList = graph.getAdjacencyList()
+                            graph.toAdjacentList(verticesList)
                             val cycle = graph.checkForCycle(verticesList[0])
                             if (cycle.isNullOrEmpty()) {
                                 scope.launch {
@@ -115,7 +120,7 @@ fun PunktsSpelApp(
                                 }
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
-                                vList.clear()
+                                //vList.clear()
                             } else {
                                 punktsSpelViewModel.addPath(cycle)
                                 val edgeToEdgeGraph = graph.toEdgeToEdgeList()
@@ -124,7 +129,7 @@ fun PunktsSpelApp(
                                 scoreP2 = punktsSpelViewModel.getScoreP2()
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
-                                vList.clear()
+                                //vList.clear()
                             }
                         }
                     }

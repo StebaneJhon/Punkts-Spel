@@ -25,14 +25,18 @@ fun State(
         modifier = Modifier
     ) {
         StateItem(
-            modifier = modifier.weight(1f),
+            modifier = modifier
+                .weight(1f)
+                .padding(top = 8.dp, start = 8.dp),
             name = "Player 1",
             score = player1Sore,
             background = lightNavy,
             textColor = darkNavy
         )
         StateItem(
-            modifier = modifier.weight(1f),
+            modifier = modifier
+                .weight(1f)
+                .padding(top = 8.dp, start = 8.dp, bottom = 8.dp),
             name = "Player 2",
             score = player2Sore,
             background = lightGreen,

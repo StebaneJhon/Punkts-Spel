@@ -13,7 +13,7 @@ import com.ssoaharison.punktsspel.models.PointPairEdgeToEdge
 
 class PunktsSpelViewModel: ViewModel() {
 
-    private val _points = createPointList(5, 3).toMutableStateList()
+    private val _points = createPointList(7, 5).toMutableStateList()
     val points: List<List<Point>>
         get() = _points
 
@@ -79,6 +79,20 @@ class PunktsSpelViewModel: ViewModel() {
         return isActive
     }
 
+    fun isCaught(point: Point): Boolean {
+        p1CaughtPoints.forEach { p ->
+            if (p.id == point.id) {
+                return true
+            }
+        }
+        p2CaughtPoints.forEach { p ->
+            if (p.id == point.id) {
+                return true
+            }
+        }
+        return false
+    }
+
     fun addPath(vertexes: List<Point>) {
         val path = generatePath(vertexes)
         val color = vertexes[0].color !!
@@ -95,7 +109,7 @@ class PunktsSpelViewModel: ViewModel() {
                     if (pair.lower.positionRow!! < point.positionRow!!  &&
                         point.positionRow!! < pair.higher.positionRow!!
                     ) {
-                        if (player == 1) {
+                        if (player == 2) {
                             _p1CaughtPoints.add(point)
                         } else {
                             _p2CaughtPoints.add(point)

@@ -233,3 +233,7 @@ val lightGreen = Color(0xFFE1F0DA)
 val baseNavy = Color(0xFF1050C9C)
 val darkNavy = Color(0xFF071952)
 val lightNavy = Color(0xFFEBF4F6)
+
+val baseRed = Color(0xFF0BF3131)
+val darkRed = Color(0xFF3D0000)
+val lightRed = Color(0xFFFFEADD)

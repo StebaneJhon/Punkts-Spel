@@ -36,6 +36,7 @@ import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
 import com.ssoaharison.punktsspel.ui.theme.baseGreen
 import com.ssoaharison.punktsspel.ui.theme.baseNavy
+import com.ssoaharison.punktsspel.ui.theme.baseRed
 import com.ssoaharison.punktsspel.ui.theme.primaryContainerLight
 import com.ssoaharison.punktsspel.util.PointCatchingState.ARE_CATCHING
 import com.ssoaharison.punktsspel.util.PointCatchingState.ARE_NOT_CATCHING
@@ -99,7 +100,7 @@ fun GameBoard (
                                 val yPosition =
                                     positionColumnPoint * (canvasSize.height / (horizontalLines + 1))
 
-                                val pointColor = if (actualPlayer == 1) baseGreen else baseNavy
+                                val pointColor = if (actualPlayer == 1) baseRed else baseNavy
                                 val pointId = "$positionColumnPoint:$positionRowPoint"
 
                                 val newPoint = Point(
@@ -209,7 +210,7 @@ fun GameBoard (
             if (actualPlayer == 2) {
                 baseNavy
             } else {
-                baseGreen
+                baseRed
             }
         }
 
@@ -244,15 +245,6 @@ fun GameBoard (
                 }
 
             }
-//            TextButton(
-//                onClick = {
-//                    areCatching = ARE_NOT_CATCHING
-//                    onDoneCatching(actualPlayer)
-//                },
-//                modifier = Modifier
-//            ) {
-//                Text(text = "Done")
-//            }
         }
     }
 

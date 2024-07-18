@@ -1,9 +1,8 @@
-package com.ssoaharison.punktsspel
+package com.ssoaharison.punktsspel.util
 
 import android.util.Log
 import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.models.PointPairEdgeToEdge
-import kotlin.contracts.Returns
 
 class Graph {
 

@@ -101,24 +101,45 @@ class PunktsSpelViewModel: ViewModel() {
     }
 
     fun countCaughtPoints(edgeToEdgeGraph: List<PointPairEdgeToEdge>, player: Int) {
-
         edgeToEdgeGraph.forEach { pair ->
             val positionColumn = pair.higher.positionColumn
             _points[positionColumn!!].forEach { point ->
                 if (point.isActive) {
-                    if (pair.lower.positionRow!! < point.positionRow!!  &&
-                        point.positionRow!! < pair.higher.positionRow!!
+                    if (
+                        pair.lower.positionRow!! < point.positionRow!!  &&
+                        point.positionRow!! < pair.higher.positionRow!! &&
+                        point.toPlayer != player
                     ) {
-                        if (player == 2) {
-                            _p1CaughtPoints.add(point)
-                        } else {
-                            _p2CaughtPoints.add(point)
-                        }
+                        catch(point, player)
                     }
                 }
             }
         }
+    }
 
+    private fun catch(point: Point, player: Int) {
+        if (point !in _p1CaughtPoints && point !in _p2CaughtPoints) {
+            if (player == 2) {
+                _p1CaughtPoints.add(point)
+            } else {
+                _p2CaughtPoints.add(point)
+            }
+        }
+    }
+
+    fun restart() {
+        clearBoard()
+        _paths.clear()
+        _p1CaughtPoints.clear()
+        _p2CaughtPoints.clear()
+    }
+
+    private fun clearBoard() {
+        _points.forEach { row ->
+            for (index in row.indices) {
+                row[index] = Point(isActive = false,)
+            }
+        }
     }
 
 }

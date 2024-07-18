@@ -2,30 +2,36 @@ package com.ssoaharison.punktsspel
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ssoaharison.punktsspel.components.State
 import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
+import com.ssoaharison.punktsspel.util.Graph
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -63,12 +69,36 @@ fun PunktsSpelApp(
                     .background(MaterialTheme.colorScheme.background)
                     .padding(contentPadding)
             ) {
+                Column(
+                    modifier = modifier
+                        .fillMaxHeight()
+                        .width(110.dp)) {
+                    State(
+                        modifier = modifier
+                            .weight(1F)
+                            .fillMaxWidth(),
+                        player1Sore = scoreP1,
+                        player2Sore = scoreP2,
+                    )
+                    Button(
+                        modifier = modifier
+                            .padding(start = 8.dp, bottom = 3.dp, end = 0.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(0),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor =  MaterialTheme.colorScheme.inversePrimary
+                        ),
+                        onClick = {
+                            punktsSpelViewModel.restart()
+                            scoreP1 = 0
+                            scoreP2 = 0
+                            verticesList.clear()
+                        }
+                    ) {
+                        Text(text = "Restart")
+                    }
+                }
 
-                State(
-                    modifier = modifier,
-                    player1Sore = scoreP1,
-                    player2Sore = scoreP2,
-                )
 
                 GameBoard(
                     modifier = modifier,
@@ -78,6 +108,7 @@ fun PunktsSpelApp(
                     listPaths = punktsSpelViewModel.paths,
                     onAddPoint = { point ->
                         punktsSpelViewModel.addPoint(point)
+
                     },
                     onShowSnackBar = { text ->
                         scope.launch {

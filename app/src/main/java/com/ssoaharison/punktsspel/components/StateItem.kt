@@ -28,7 +28,6 @@ fun StateItem(
   Column(
       modifier
           .background(background)
-          .fillMaxHeight()
           .padding(16.dp)
   ) {
       Text(

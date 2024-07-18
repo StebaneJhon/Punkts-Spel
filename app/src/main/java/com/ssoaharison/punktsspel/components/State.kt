@@ -12,8 +12,10 @@ import androidx.compose.ui.unit.dp
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
 import com.ssoaharison.punktsspel.ui.theme.darkGreen
 import com.ssoaharison.punktsspel.ui.theme.darkNavy
+import com.ssoaharison.punktsspel.ui.theme.darkRed
 import com.ssoaharison.punktsspel.ui.theme.lightGreen
 import com.ssoaharison.punktsspel.ui.theme.lightNavy
+import com.ssoaharison.punktsspel.ui.theme.lightRed
 
 @Composable
 fun State(
@@ -22,11 +24,10 @@ fun State(
     player2Sore: Int,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
     ) {
         StateItem(
             modifier = modifier
-                .weight(1f)
                 .padding(top = 8.dp, start = 8.dp),
             name = "Player 1",
             score = player1Sore,
@@ -35,12 +36,11 @@ fun State(
         )
         StateItem(
             modifier = modifier
-                .weight(1f)
-                .padding(top = 8.dp, start = 8.dp, bottom = 8.dp),
+                .padding(top = 8.dp, start = 8.dp, bottom = 4.dp),
             name = "Player 2",
             score = player2Sore,
-            background = lightGreen,
-            textColor = darkGreen
+            background = lightRed,
+            textColor = darkRed
         )
     }
 

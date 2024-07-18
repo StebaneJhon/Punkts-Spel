@@ -1,9 +1,5 @@
 package com.ssoaharison.punktsspel
 
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Path
 import androidx.lifecycle.ViewModel

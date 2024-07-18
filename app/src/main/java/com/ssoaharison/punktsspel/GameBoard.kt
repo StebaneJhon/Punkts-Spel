@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import com.ssoaharison.punktsspel.models.PathModel
 import com.ssoaharison.punktsspel.models.Point
 import com.ssoaharison.punktsspel.ui.theme.PunktsSpelTheme
-import com.ssoaharison.punktsspel.ui.theme.baseGreen
 import com.ssoaharison.punktsspel.ui.theme.baseNavy
 import com.ssoaharison.punktsspel.ui.theme.baseRed
 import com.ssoaharison.punktsspel.ui.theme.primaryContainerLight

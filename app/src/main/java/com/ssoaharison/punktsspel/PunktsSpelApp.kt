@@ -130,7 +130,7 @@ fun PunktsSpelApp(
                             }
                             return@GameBoard
                         }
-                        if (punktsSpelViewModel.isActive(point)) {
+                        if (punktsSpelViewModel.isActive(point) && point !in verticesList) {
                             verticesList.add(point)
                         } else {
                             scope.launch {

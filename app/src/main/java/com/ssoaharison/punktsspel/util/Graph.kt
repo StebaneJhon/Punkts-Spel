@@ -86,19 +86,9 @@ class Graph {
                     cycle.forEach { point2 ->
                         if (point2 != point1 && point2.positionColumn == point1.positionColumn) {
                             if (point1.positionRow!! > point2.positionRow!!) {
-                                result.add(
-                                    PointPairEdgeToEdge(
-                                        point2,
-                                        point1
-                                    )
-                                )
+                                result.add(PointPairEdgeToEdge(point2, point1))
                             } else {
-                                result.add(
-                                    PointPairEdgeToEdge(
-                                        point1,
-                                        point2
-                                    )
-                                )
+                                result.add(PointPairEdgeToEdge(point1, point2))
                             }
                             paired.add(point2)
                         }

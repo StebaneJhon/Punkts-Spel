@@ -89,11 +89,14 @@ class PunktsSpelViewModel: ViewModel() {
         return false
     }
 
-    fun addPath(vertexes: List<Point>) {
-        val path = generatePath(vertexes)
-        val color = vertexes[0].color !!
-        val pathModel = PathModel(color, path)
-        _paths.add(pathModel)
+    fun addPath(cycles: List<List<Point>>) {
+        cycles.forEach { cycle ->
+            val path = generatePath(cycle)
+            val color = cycle[0].color !!
+            val pathModel = PathModel(color, path)
+            _paths.add(pathModel)
+        }
+
     }
 
     fun countCaughtPoints(edgeToEdgeGraph: List<PointPairEdgeToEdge>, player: Int) {
@@ -136,6 +139,15 @@ class PunktsSpelViewModel: ViewModel() {
                 row[index] = Point(isActive = false,)
             }
         }
+    }
+
+    fun arePointInListPoint(point: Point, pointList: List<Point>): Boolean {
+        pointList.forEach { p ->
+            if ( p.id == point.id ) {
+                return true
+            }
+        }
+        return false
     }
 
 }

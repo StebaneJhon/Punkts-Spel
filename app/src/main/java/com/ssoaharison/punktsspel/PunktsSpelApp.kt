@@ -130,7 +130,9 @@ fun PunktsSpelApp(
                             }
                             return@GameBoard
                         }
-                        if (punktsSpelViewModel.isActive(point) && point !in verticesList) {
+                        if (punktsSpelViewModel.isActive(point) && punktsSpelViewModel.arePointInListPoint(point, verticesList)) {
+                            // Do nothing
+                        } else if (punktsSpelViewModel.isActive(point) && !punktsSpelViewModel.arePointInListPoint(point, verticesList)) {
                             verticesList.add(point)
                         } else {
                             scope.launch {
@@ -141,7 +143,6 @@ fun PunktsSpelApp(
                     },
                     onDoneCatching = { player ->
                         if (!verticesList.isEmpty()) {
-                            val vList = verticesList
                             val graph = Graph()
                             graph.toAdjacentList(verticesList)
                             val cycle = graph.checkForCycle(verticesList[0])
@@ -151,16 +152,15 @@ fun PunktsSpelApp(
                                 }
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
-                                //vList.clear()
                             } else {
+                                //TODO: For now change cycle.first to take the longest cycle
                                 punktsSpelViewModel.addPath(cycle)
-                                val edgeToEdgeGraph = graph.toEdgeToEdgeList()
+                                val edgeToEdgeGraph = graph.toEdgeToEdgeList(cycle.first())
                                 punktsSpelViewModel.countCaughtPoints(edgeToEdgeGraph, player)
                                 scoreP1 = punktsSpelViewModel.getScoreP1()
                                 scoreP2 = punktsSpelViewModel.getScoreP2()
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
-                                //vList.clear()
                             }
                         }
                     }

@@ -15,6 +15,7 @@ class Graph {
     fun clearAdjacencyList() {
         adjacencyList.clear()
     }
+
     fun addVertex(vertex: Point) {
         adjacencyList[vertex] = mutableListOf()
     }
@@ -42,45 +43,67 @@ class Graph {
         return adjacencyList.toMap()
     }
 
-    fun checkForCycle(startPoint: Point): List<Point>? {
-        if (adjacencyList.keys.size < 3) {
+    fun checkForCycle(startPoint: Point): List<List<Point>>? {
+        val adjacencyListSize = adjacencyList.keys.size
+        if (adjacencyListSize < 3) {
             return null
         }
         val markedVertexes = mutableListOf<Point>()
-        var previousPoint: Point? = null
+        val cycle = mutableListOf<Point>()
+        val cycleList = mutableListOf<List<Point>>()
         var actualPoint = startPoint
-        var end = false
-        while (!end) {
+
+        while (adjacencyListSize >= markedVertexes.size) {
             if (adjacencyList[actualPoint]?.size == 1) {
                 markedVertexes.clear()
+                cycle.clear()
                 break
             }
-            markedVertexes.add(actualPoint)
-            val a = adjacencyList[actualPoint]
-            for (point in adjacencyList[actualPoint]!!) {
-                if (point != previousPoint) {
-                    if (point in markedVertexes) {
-                        end = true
-                        break
-                    } else {
-                        previousPoint = actualPoint
-                        actualPoint = point
-                        break
-                    }
-                }
+            if (actualPoint !in markedVertexes) {
+                markedVertexes.add(actualPoint)
+                cycle.add(actualPoint)
             }
 
+            val point = getUnmarkedNeighbor(actualPoint, markedVertexes)
+            if (point == null && markedVertexes.size == adjacencyListSize) {
+                cycleList.add(cycle)
+                break
+            } else if (point == null && markedVertexes.size < adjacencyListSize) {
+                cycleList.add(cycle.toList())
+                cycle.removeAt(cycle.size.minus(1))
+                actualPoint = cycle.last()
+            } else {
+                actualPoint = point!!
+            }
         }
 
-        return markedVertexes
+        return cycleList.filter { it.first() in adjacencyList[it.last()]!! && it.size > 3 }
     }
 
-    fun toEdgeToEdgeList(): List<PointPairEdgeToEdge> {
+    private fun getUnmarkedNeighbor(vertex: Point, markedVertex: List<Point>): Point? {
+        adjacencyList[vertex]?.forEach { point ->
+            if (point !in markedVertex) {
+                return point
+            }
+        }
+        return null
+    }
+
+    private fun hasUnmarkedVertex(vertex: Point, markedVertexes: List<Point>): Boolean {
+        adjacencyList[vertex]?.forEach { point ->
+            if (point !in markedVertexes) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun toEdgeToEdgeList(cycle: List<Point>): List<PointPairEdgeToEdge> {
         val startPoint = adjacencyList.keys.first()
-        val cycle = checkForCycle(startPoint)
         val result = mutableListOf<PointPairEdgeToEdge>()
         val paired = mutableListOf<Point>()
         if (!cycle.isNullOrEmpty()) {
+            //TODO: Change "cycle.first" to loop over all cycles in the cycle list her and in line 89
             cycle.forEach { point1 ->
                 if (point1 !in paired) {
                     cycle.forEach { point2 ->
@@ -105,8 +128,8 @@ class Graph {
 
     fun toAdjacentList(
         list: List<Point>,
-        ) {
-        list.forEach {  point ->
+    ) {
+        list.forEach { point ->
             if (point !in adjacencyList.keys) {
                 addVertex(point)
             }
@@ -130,13 +153,15 @@ class Graph {
             if (
                 point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow == vertex.positionRow ||
                 point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.plus(1) == vertex.positionRow ||
-                point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.minus(1) == vertex.positionRow ||
+                point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.minus(
+                    1
+                ) == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow?.plus(1) == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow?.minus(1) == vertex.positionRow ||
                 point.positionRow?.minus(1) == vertex.positionRow && point.positionColumn == vertex.positionColumn ||
                 point.positionRow?.plus(1) == vertex.positionRow && point.positionColumn == vertex.positionColumn
-                ) {
+            ) {
                 neighbors.add(vertex)
             }
         }

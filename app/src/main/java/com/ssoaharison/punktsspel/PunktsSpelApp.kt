@@ -79,7 +79,8 @@ fun PunktsSpelApp(
                             .fillMaxWidth(),
                         player1Sore = scoreP1,
                         player2Sore = scoreP2,
-                    )
+                        punktsSpelViewModel.player
+                    ) { punktsSpelViewModel.switchPlayer() }
                     Button(
                         modifier = modifier
                             .padding(start = 8.dp, bottom = 3.dp, end = 0.dp)
@@ -102,11 +103,10 @@ fun PunktsSpelApp(
 
                 GameBoard(
                     modifier = modifier,
-                    verticalLines = 7,
-                    horizontalLines = 5,
-                    listPoints = punktsSpelViewModel.points,
-                    listPaths = punktsSpelViewModel.paths,
+                    verticalLines = punktsSpelViewModel.verticalLines,
+                    horizontalLines = punktsSpelViewModel.horizontalLines,
                     onAddPoint = { point ->
+                        punktsSpelViewModel.increasePosedPoint()
                         punktsSpelViewModel.addPoint(point)
 
                     },
@@ -153,17 +153,17 @@ fun PunktsSpelApp(
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
                             } else {
-                                //TODO: For now change cycle.first to take the longest cycle
                                 punktsSpelViewModel.addPath(cycle)
                                 val edgeToEdgeGraph = graph.toEdgeToEdgeList(cycle.first())
-                                punktsSpelViewModel.countCaughtPoints(edgeToEdgeGraph, player)
+                                punktsSpelViewModel.countCaughtPoints(edgeToEdgeGraph)
                                 scoreP1 = punktsSpelViewModel.getScoreP1()
                                 scoreP2 = punktsSpelViewModel.getScoreP2()
                                 graph.clearAdjacencyList()
                                 verticesList.clear()
                             }
                         }
-                    }
+                    },
+                    punktsSpelViewModel,
                 )
             }
         }

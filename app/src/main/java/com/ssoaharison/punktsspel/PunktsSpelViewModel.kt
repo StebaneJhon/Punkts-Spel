@@ -1,5 +1,9 @@
 package com.ssoaharison.punktsspel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Path
 import androidx.lifecycle.ViewModel
@@ -9,7 +13,16 @@ import com.ssoaharison.punktsspel.models.PointPairEdgeToEdge
 
 class PunktsSpelViewModel: ViewModel() {
 
-    private val _points = createPointList(7, 5).toMutableStateList()
+    private var _verticalLines by mutableIntStateOf(8)
+    val verticalLines: Int
+        get() = _verticalLines
+
+    private var _horizontalLines by mutableIntStateOf(5)
+    val horizontalLines: Int
+        get() = _horizontalLines
+
+
+    private val _points = createPointList(verticalLines, horizontalLines).toMutableStateList()
     val points: List<List<Point>>
         get() = _points
 
@@ -25,9 +38,33 @@ class PunktsSpelViewModel: ViewModel() {
     val paths: List<PathModel>
         get() = _paths
 
+    private var _player by mutableIntStateOf(1)
+    val player: Int
+        get() = _player
+
+    private var _posedPoint by mutableIntStateOf(0)
+    val posedPoint: Int
+        get() = _posedPoint
+
     fun getScoreP1() = p1CaughtPoints.size
     fun getScoreP2() = p2CaughtPoints.size
 
+    fun increasePosedPoint() {
+        _posedPoint++
+    }
+
+    private fun initPosedPoint() {
+        _posedPoint = 0
+    }
+
+    fun switchPlayer() {
+        _player = if (_player == 1) {
+            2
+        } else {
+            1
+        }
+        initPosedPoint()
+    }
 
     fun addPoint(
         point: Point
@@ -99,7 +136,7 @@ class PunktsSpelViewModel: ViewModel() {
 
     }
 
-    fun countCaughtPoints(edgeToEdgeGraph: List<PointPairEdgeToEdge>, player: Int) {
+    fun countCaughtPoints(edgeToEdgeGraph: List<PointPairEdgeToEdge>) {
         edgeToEdgeGraph.forEach { pair ->
             val positionColumn = pair.higher.positionColumn
             _points[positionColumn!!].forEach { point ->
@@ -109,16 +146,16 @@ class PunktsSpelViewModel: ViewModel() {
                         point.positionRow!! < pair.higher.positionRow!! &&
                         point.toPlayer != player
                     ) {
-                        catch(point, player)
+                        catch(point)
                     }
                 }
             }
         }
     }
 
-    private fun catch(point: Point, player: Int) {
+    private fun catch(point: Point) {
         if (point !in _p1CaughtPoints && point !in _p2CaughtPoints) {
-            if (player == 2) {
+            if (player == 1) {
                 _p1CaughtPoints.add(point)
             } else {
                 _p2CaughtPoints.add(point)

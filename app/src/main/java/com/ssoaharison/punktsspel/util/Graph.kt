@@ -65,15 +65,19 @@ class Graph {
             }
 
             val point = getUnmarkedNeighbor(actualPoint, markedVertexes)
-            if (point == null && markedVertexes.size == adjacencyListSize) {
-                cycleList.add(cycle)
-                break
-            } else if (point == null && markedVertexes.size < adjacencyListSize) {
-                cycleList.add(cycle.toList())
-                cycle.removeAt(cycle.size.minus(1))
-                actualPoint = cycle.last()
-            } else {
-                actualPoint = point!!
+            when {
+                point == null && markedVertexes.size == adjacencyListSize -> {
+                    cycleList.add(cycle)
+                    break
+                }
+                point == null && markedVertexes.size < adjacencyListSize -> {
+                    cycleList.add(cycle.toList())
+                    cycle.removeAt(cycle.size.minus(1))
+                    actualPoint = cycle.last()
+                }
+                else -> {
+                    actualPoint = point!!
+                }
             }
         }
 
@@ -99,11 +103,9 @@ class Graph {
     }
 
     fun toEdgeToEdgeList(cycle: List<Point>): List<PointPairEdgeToEdge> {
-        val startPoint = adjacencyList.keys.first()
         val result = mutableListOf<PointPairEdgeToEdge>()
         val paired = mutableListOf<Point>()
-        if (!cycle.isNullOrEmpty()) {
-            //TODO: Change "cycle.first" to loop over all cycles in the cycle list her and in line 89
+        if (cycle.isNotEmpty()) {
             cycle.forEach { point1 ->
                 if (point1 !in paired) {
                     cycle.forEach { point2 ->

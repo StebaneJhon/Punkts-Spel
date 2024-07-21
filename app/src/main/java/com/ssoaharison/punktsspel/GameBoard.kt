@@ -45,13 +45,13 @@ fun GameBoard (
     modifier: Modifier,
     verticalLines: Int,
     horizontalLines: Int,
-    listPoints: List<List<Point>>,
-    listPaths: List<PathModel>,
     onAddPoint: (Point) -> Unit,
     onShowSnackBar: (String) -> Unit,
     onCatching: (Point) -> Unit,
     onDoneCatching: (Int) -> Unit,
+    viewModel: PunktsSpelViewModel
 ) {
+
 
     var canvasSize by remember {
         mutableStateOf(Size.Zero)
@@ -59,25 +59,23 @@ fun GameBoard (
     var clickPointOffset by remember {
         mutableStateOf(Offset.Zero)
     }
-    var actualPlayer by remember {
-        mutableIntStateOf(1)
-    }
+
     var areCatching by rememberSaveable { mutableStateOf(ARE_NOT_CATCHING) }
 
 
     val barWidthPx = 2.dp
 
     Row (
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .weight(1F)
         ) {
             Canvas(
-                modifier = Modifier
+                modifier = modifier
                     .padding(8.dp)
                     .fillMaxSize()
                     .pointerInput(true) {
@@ -98,7 +96,7 @@ fun GameBoard (
                                 val yPosition =
                                     positionColumnPoint * (canvasSize.height / (horizontalLines + 1))
 
-                                val pointColor = if (actualPlayer == 1) baseRed else baseNavy
+                                val pointColor = if (viewModel.player == 2) baseRed else baseNavy
                                 val pointId = "$positionColumnPoint:$positionRowPoint"
 
                                 val newPoint = Point(
@@ -108,7 +106,7 @@ fun GameBoard (
                                     positionColumnPoint,
                                     xPosition,
                                     yPosition,
-                                    actualPlayer,
+                                    viewModel.player,
                                     pointColor
                                 )
 
@@ -116,17 +114,9 @@ fun GameBoard (
                                     ARE_CATCHING -> {
                                         onCatching(newPoint)
                                     }
-
-                                    CATCHING_DONE -> {
-                                        //TODO: Checking cycle
-                                        //TODO: DRAWING CYCLE
-                                        //TODO: Counting Point
-                                    }
-
                                     ARE_NOT_CATCHING -> {
-                                        if (!isPointActive(listPoints, newPoint)) {
+                                        if (!isPointActive(viewModel.points, newPoint) && viewModel.posedPoint == 0) {
                                             onAddPoint(newPoint)
-                                            actualPlayer = if (actualPlayer == 1) 2 else 1
                                         } else {
                                             onShowSnackBar("Ser ut som att du inte kan sätta en punkt här.")
                                         }
@@ -168,7 +158,7 @@ fun GameBoard (
                     )
                 }
 
-                listPoints.forEach { row ->
+                viewModel.points.forEach { row ->
                     row.forEach { point ->
                         if (point.isActive) {
                             drawCircle(
@@ -183,7 +173,7 @@ fun GameBoard (
                     }
                 }
 
-                listPaths.forEach { pathModel ->
+                viewModel.paths.forEach { pathModel ->
                     drawPath(
                         pathModel.path,
                         pathModel.color,
@@ -205,7 +195,7 @@ fun GameBoard (
         val buttonColor = if(areCatching == ARE_NOT_CATCHING) {
             MaterialTheme.colorScheme.inversePrimary
         } else {
-            if (actualPlayer == 2) {
+            if (viewModel.player == 1) {
                 baseNavy
             } else {
                 baseRed
@@ -217,14 +207,13 @@ fun GameBoard (
         ) {
             Button(
                 onClick = {
-                    //areCatching = ARE_CATCHING
                     areCatching = if (areCatching == ARE_NOT_CATCHING) {
                         ARE_CATCHING
                     } else {
                         ARE_NOT_CATCHING
                     }
                     if(areCatching == ARE_NOT_CATCHING) {
-                        onDoneCatching(actualPlayer)
+                        onDoneCatching(viewModel.player)
                     }
                 },
                 modifier = Modifier
@@ -276,12 +265,11 @@ fun PreviewGameBoard() {
             GameBoard(modifier = Modifier,
                 10,
                 5,
-                listOf<List<Point>>(),
-                listOf<PathModel>(),
                 {null},
                 {null},
                 {null},
                 {null},
+                viewModel = PunktsSpelViewModel()
                 )
         }
     }

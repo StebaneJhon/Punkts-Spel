@@ -46,6 +46,20 @@ class PunktsSpelViewModel: ViewModel() {
     val posedPoint: Int
         get() = _posedPoint
 
+    private var _verticesList = listOf<Point>().toMutableStateList()
+    val verticesList: List<Point>
+        get() = _verticesList
+
+    fun clearVerticesList() {
+        _verticesList.clear()
+    }
+
+    fun addVertexToVerticesList(point: Point) {
+        _verticesList.add(point)
+    }
+
+    fun isVerticesListEmpty() = _verticesList.isEmpty()
+
     fun getScoreP1() = p1CaughtPoints.size
     fun getScoreP2() = p2CaughtPoints.size
 

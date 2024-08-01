@@ -180,6 +180,24 @@ fun GameBoard (
                         Fill
                     )
                 }
+
+                 viewModel.verticesList.forEach { vertex ->
+                     drawCircle(
+                         vertex.color!!,
+                         center = Offset(vertex.x!!, vertex.y!!),
+                         radius = 10.dp.toPx(),
+                         alpha = 0.1f,
+                         style = Fill,
+                     )
+
+                     drawCircle(
+                         vertex.color!!,
+                         center = Offset(vertex.x!!, vertex.y!!),
+                         radius = 10.dp.toPx(),
+                         alpha = 0.5f,
+                         style = Stroke(2.dp.toPx()),
+                     )
+                 }
             }
         }
 

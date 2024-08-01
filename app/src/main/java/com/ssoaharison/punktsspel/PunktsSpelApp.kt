@@ -52,7 +52,7 @@ fun PunktsSpelApp(
         mutableIntStateOf(0)
     }
 
-    var verticesList = listOf<Point>().toMutableStateList()
+
 
 
     PunktsSpelTheme {
@@ -93,7 +93,7 @@ fun PunktsSpelApp(
                             punktsSpelViewModel.restart()
                             scoreP1 = 0
                             scoreP2 = 0
-                            verticesList.clear()
+                            punktsSpelViewModel.clearVerticesList()
                         }
                     ) {
                         Text(text = "Restart")
@@ -130,10 +130,10 @@ fun PunktsSpelApp(
                             }
                             return@GameBoard
                         }
-                        if (punktsSpelViewModel.isActive(point) && punktsSpelViewModel.arePointInListPoint(point, verticesList)) {
+                        if (punktsSpelViewModel.isActive(point) && punktsSpelViewModel.arePointInListPoint(point, punktsSpelViewModel.verticesList)) {
                             // Do nothing
-                        } else if (punktsSpelViewModel.isActive(point) && !punktsSpelViewModel.arePointInListPoint(point, verticesList)) {
-                            verticesList.add(point)
+                        } else if (punktsSpelViewModel.isActive(point) && !punktsSpelViewModel.arePointInListPoint(point, punktsSpelViewModel.verticesList)) {
+                            punktsSpelViewModel.addVertexToVerticesList(point)
                         } else {
                             scope.launch {
                                 snackbarHostState.showSnackbar(message = "Välja en av dina punkter.")
@@ -142,16 +142,16 @@ fun PunktsSpelApp(
                         }
                     },
                     onDoneCatching = { player ->
-                        if (!verticesList.isEmpty()) {
+                        if (!punktsSpelViewModel.isVerticesListEmpty()) {
                             val graph = Graph()
-                            graph.toAdjacentList(verticesList)
-                            val cycle = graph.checkForCycle(verticesList[0])
+                            graph.toAdjacentList(punktsSpelViewModel.verticesList)
+                            val cycle = graph.checkForCycle(punktsSpelViewModel.verticesList.first())
                             if (cycle.isNullOrEmpty()) {
                                 scope.launch {
                                     snackbarHostState.showSnackbar(message = "Den här är inte stängd?")
                                 }
                                 graph.clearAdjacencyList()
-                                verticesList.clear()
+                                punktsSpelViewModel.clearVerticesList()
                             } else {
                                 punktsSpelViewModel.addPath(cycle)
                                 val edgeToEdgeGraph = graph.toEdgeToEdgeList(cycle.first())
@@ -159,7 +159,7 @@ fun PunktsSpelApp(
                                 scoreP1 = punktsSpelViewModel.getScoreP1()
                                 scoreP2 = punktsSpelViewModel.getScoreP2()
                                 graph.clearAdjacencyList()
-                                verticesList.clear()
+                                punktsSpelViewModel.clearVerticesList()
                             }
                         }
                     },

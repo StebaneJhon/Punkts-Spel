@@ -90,11 +90,8 @@ fun GameBoard (
                                     ((clickPointOffset.y.minus(barWidthPx.toPx()) / canvasSize.height * horizontalLines.plus(
                                         2
                                     )).toInt())
-
-                                val xPosition =
-                                    positionRowPoint * (canvasSize.width / (verticalLines + 1))
-                                val yPosition =
-                                    positionColumnPoint * (canvasSize.height / (horizontalLines + 1))
+                                val xPosition = positionRowPoint * (canvasSize.width / (verticalLines + 1))
+                                val yPosition = positionColumnPoint * (canvasSize.height / (horizontalLines + 1))
 
                                 val pointColor = if (viewModel.player == 2) baseRed else baseNavy
                                 val pointId = "$positionColumnPoint:$positionRowPoint"
@@ -127,11 +124,9 @@ fun GameBoard (
                     }
 
             ) {
-
                 val canvasHeight = size.height
                 val canvasWidth = size.width
                 canvasSize = Size(canvasWidth, canvasHeight)
-
                 drawRect(
                     primaryContainerLight,
                     style = Stroke(barWidthPx.toPx()))
@@ -146,7 +141,6 @@ fun GameBoard (
                         strokeWidth = barWidthPx.toPx()
                     )
                 }
-
                 val sectionSize = size.height / (horizontalLines + 1)
                 repeat(horizontalLines) { i ->
                     val startY = sectionSize * (i + 1)
@@ -157,7 +151,6 @@ fun GameBoard (
                         strokeWidth = barWidthPx.toPx()
                     )
                 }
-
                 viewModel.points.forEach { row ->
                     row.forEach { point ->
                         if (point.isActive) {
@@ -172,7 +165,6 @@ fun GameBoard (
                         }
                     }
                 }
-
                 viewModel.paths.forEach { pathModel ->
                     drawPath(
                         pathModel.path,
@@ -188,7 +180,6 @@ fun GameBoard (
                         Fill
                     )
                 }
-
             }
         }
 

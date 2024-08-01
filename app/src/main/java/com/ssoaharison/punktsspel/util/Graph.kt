@@ -25,24 +25,6 @@ class Graph {
         adjacencyList[to]?.add(from)
     }
 
-    fun removeVertex(vertex: Point) {
-        adjacencyList[vertex]?.let { adjVertices ->
-            adjVertices.forEach { adjVertex ->
-                adjacencyList[adjVertex]?.remove(vertex)
-            }
-            adjacencyList.remove(vertex)
-        }
-    }
-
-    fun removeEdge(from: Point, to: Point) {
-        adjacencyList[from]?.remove(to)
-        adjacencyList[to]?.remove(from)
-    }
-
-    fun getAdjacencyList(): Map<Point, List<Point>> {
-        return adjacencyList.toMap()
-    }
-
     fun checkForCycle(startPoint: Point): List<List<Point>>? {
         val adjacencyListSize = adjacencyList.keys.size
         if (adjacencyListSize < 3) {
@@ -91,15 +73,6 @@ class Graph {
             }
         }
         return null
-    }
-
-    private fun hasUnmarkedVertex(vertex: Point, markedVertexes: List<Point>): Boolean {
-        adjacencyList[vertex]?.forEach { point ->
-            if (point !in markedVertexes) {
-                return true
-            }
-        }
-        return false
     }
 
     fun toEdgeToEdgeList(cycle: List<Point>): List<PointPairEdgeToEdge> {
@@ -155,9 +128,7 @@ class Graph {
             if (
                 point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow == vertex.positionRow ||
                 point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.plus(1) == vertex.positionRow ||
-                point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.minus(
-                    1
-                ) == vertex.positionRow ||
+                point.positionColumn?.minus(1) == vertex.positionColumn && point.positionRow?.minus(1) == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow?.plus(1) == vertex.positionRow ||
                 point.positionColumn?.plus(1) == vertex.positionColumn && point.positionRow?.minus(1) == vertex.positionRow ||

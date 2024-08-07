@@ -18,7 +18,7 @@ Programmet som ska utvecklas är ett spel som kallas för “Punkts spel”. Hur
 - Spelet spelas i en kollegieblock med rutade blad. 
 - Varje spelare sätter punkter i bladets rutornas hörn i tur, en efter den andra. 
  Spelarna måste ha olika punkt färger för att förenkla spelets utläsning.
-![Main screen.](/Main screen pointed state.png)
+![Main screen.]([(https://myoctocat.com/assets/images/base-octocat.svg))
 - Målet är att omringa eller slå in varandras punkter med ens egna punkter. 
  Man gör det genom att sätta punkter kring den andra spelarens punkter med minst fyra punkter med ett streck emellan varandra. 
  Sedan kopplar man ihop prickarna med linjer kring  dem låsta punkterna för att visa att de är verkligen omringade och underlättar spelets utläsning.

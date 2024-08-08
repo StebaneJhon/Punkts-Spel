@@ -22,6 +22,5 @@ Programmet, har jag kodat under ett skolprojekt.
 - Efter att ha klickat på knappen “Catch”, körs en algoritm som kontrollerar om punkterna man har valt formar verkligen en cykel.
   Om så är fallet, ritas cykeln automatiskt och de inringade punkterna räknas.</br>
  ![Done Catching 1](assets/has-caught.png)
- </br>
  ![Done Catching 2](assets/multi-dots-caught.png)
 

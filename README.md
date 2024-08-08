@@ -1,8 +1,8 @@
 # Punkts-Spel
 
 ### Presentation: 
-Det här är en digital version av ett spel jag spelade med papper och penna när jag var liten, med mina vänner. 
-Programmet, har jag kodat under ett skolprojekt.
+Det här är en digital version av ett spel som jag spelade med papper och penna när jag var liten med mina vänner. 
+Programmet har jag kodat under ett skolprojekt.
 
 ### Verktyg som jag har använt:
 - Kotlin för koden

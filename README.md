@@ -18,11 +18,11 @@ Programmet som ska utvecklas är ett spel som kallas för “Punkts spel”. Hur
 - Spelet spelas i en kollegieblock med rutade blad. 
 - Varje spelare sätter punkter i bladets rutornas hörn i tur, en efter den andra. 
  Spelarna måste ha olika punkt färger för att förenkla spelets utläsning. </br>
-![Main screen.](https://drive.google.com/file/d/1SQGLSQw4J7L7BbrQ4QL28ZOkWdJcjCIc/view?usp=drive_link)
+![Main screen.](https://drive.google.com/file/d/1SQGLSQw4J7L7BbrQ4QL28ZOkWdJcjCIc)
 - Målet är att omringa eller slå in varandras punkter med ens egna punkter. 
  Man gör det genom att sätta punkter kring den andra spelarens punkter med minst fyra punkter med ett streck emellan varandra. 
  Sedan kopplar man ihop prickarna med linjer kring  dem låsta punkterna för att visa att de är verkligen omringade och underlättar spelets utläsning. </br>
-![Catching](https://drive.google.com/file/d/1tamqvR-89uR8YVg6NS4VjWiT58tX4ZIy/view?usp=drive_link)
+![Catching](https://drive.google.com/file/d/1tamqvR-89uR8YVg6NS4VjWiT58tX4ZIy)
 - Omringade punkter kan inte användas för att omringa andra punkter, men punkter som omringar andra punkter kan användas för att omringa andra punkter som illustreras i bilden ovan. 
 - I slutet är det den spelare som har omringat de flesta punkter som vinner.
 

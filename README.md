@@ -9,7 +9,7 @@ Programmet har jag kodat under ett skolprojekt.
 - Jetpack Compose för UI-n
 - Canvas för SpelBrädet
 - Graph data structure för att representera ett graf
-- DFS-algorithm för att detektera cykeln i grafen
+- DFS-algorithm för att detektera cykeln i en graf
 
 ### Hur spelet går:
 - Spelarna sätter prickar per tur på spelbrädet.

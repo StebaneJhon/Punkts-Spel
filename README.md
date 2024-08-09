@@ -13,7 +13,8 @@ Programmet har jag kodat under ett skolprojekt.
 
 ### Hur spelet går:
 - Spelarna sätter prickar per tur på spelbrädet.
-  Ens tur är slut när man har klickat in på ens score panel.</br>
+- En spelare sätter en prick per tur. Om den har precis omringat kan den sätta en extra punkt.
+- Ens tur är slut när man har klickat in på ens score panel.</br>
 ![Punkt sättning.](assets/main-screen-with-two-dots.png)
 - Målet är att omringa eller slå in varandras punkter med ens egna punkter. 
   Man gör det genom att sätta  minst fyra punkter kring den andra spelarens punkter. 

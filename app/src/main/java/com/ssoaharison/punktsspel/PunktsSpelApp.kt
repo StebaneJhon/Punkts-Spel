@@ -148,7 +148,7 @@ fun PunktsSpelApp(
                             val cycle = graph.checkForCycle(punktsSpelViewModel.verticesList.first())
                             if (cycle.isNullOrEmpty()) {
                                 scope.launch {
-                                    snackbarHostState.showSnackbar(message = "Den här är inte stängd?")
+                                    snackbarHostState.showSnackbar(message = "Den här är inte stängd!")
                                 }
                                 graph.clearAdjacencyList()
                                 punktsSpelViewModel.clearVerticesList()
@@ -160,6 +160,7 @@ fun PunktsSpelApp(
                                 scoreP2 = punktsSpelViewModel.getScoreP2()
                                 graph.clearAdjacencyList()
                                 punktsSpelViewModel.clearVerticesList()
+                                punktsSpelViewModel.initPosedPoint()
                             }
                         }
                     },

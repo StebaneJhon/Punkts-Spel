@@ -67,7 +67,7 @@ class PunktsSpelViewModel: ViewModel() {
         _posedPoint++
     }
 
-    private fun initPosedPoint() {
+    fun initPosedPoint() {
         _posedPoint = 0
     }
 
